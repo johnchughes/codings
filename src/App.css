@@ -1,0 +1,50 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+input[type="text"] {
+  margin-top: 1rem;
+  width:100%;
+  padding:0.5rem;
+  font-size: 1.5rem;
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.codings {
+  
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  span {
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+    color: grey;
+
+    &.current {
+      color: pink;
+    }
+
+    &.correct {
+      color: green;
+    }
+
+    &.wrong {
+      color: red;
+    }
+
+  }
+}
+
+
