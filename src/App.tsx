@@ -1,10 +1,10 @@
 import { useState, type ReactElement } from 'react'
 import './App.css'
-import { CreatePhrase } from './EnglishWords.ts';
+import { CreatePhrase } from './lib/PhraseGen.ts';
 import { Word, type IWord } from './Word.tsx';
 import { Keys } from './statics.ts';
 interface ICodingsState {
-  phraseLength: 25,
+  phraseLength: number,
   attempt: string,
   index: number,
   words: IWord[]
@@ -15,10 +15,10 @@ const INITIAL_INDEX = 0;
 function App() {
 
   const [cfg, setCfg] = useState<ICodingsState>({
-    phraseLength: 25,
+    phraseLength: 50,
     attempt: "",
     index: INITIAL_INDEX,
-    words: CreatePhrase(25).map((x:string, idx:number) => { return {value: x, attempt: '', isCurrent: idx == INITIAL_INDEX};})
+    words: CreatePhrase(50).map((x:string, idx:number) => { return {value: x, attempt: '', isCurrent: idx == INITIAL_INDEX};})
   });
 
 
@@ -38,10 +38,10 @@ function App() {
 
   const onEscKeyDown = (evt:React.KeyboardEvent<HTMLInputElement>) => {
       const next = {
-        phraseLength: 25,
+        phraseLength: 50,
         attempt: "",
         index: INITIAL_INDEX,
-        words: CreatePhrase(25).map((x:string, idx:number) => { return {value: x, attempt: '', isCurrent: idx == INITIAL_INDEX};})
+        words: CreatePhrase(50).map((x:string, idx:number) => { return {value: x, attempt: '', isCurrent: idx == INITIAL_INDEX};})
       };
       setCfg(next);
   }
