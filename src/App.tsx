@@ -1,43 +1,10 @@
 import { useState, type ReactElement } from 'react'
 import './App.css'
-import { Phrase } from './lib/phrases.ts';
-
-//TODO: Tidy conmsts up into an object e.g. Key.Space 
-const KEY_SPACE : string = "Space";
-const KEY_ESC : string = "Esc";
-
-
-interface IWord {
-  isCurrent: boolean,
-  value: string,
-  attempt: string
-}
-
-const Word = ({value, attempt, isCurrent}:IWord) => {
-
-  //TOOD: trim before passing in. 
-  const trimmpedAttempt = attempt ? attempt.trim() :  attempt;
-  //Refactor.
-  const GetClass = () => {
-
-    if(isCurrent) {
-      return "current";
-    }
-
-    if(!isCurrent && trimmpedAttempt && value != trimmpedAttempt) {
-      return "wrong"
-    }
-    else if(!isCurrent && trimmpedAttempt && value == trimmpedAttempt){
-      return "correct";
-    }
-
-  }
-
-  return <span className={GetClass()}>{value}</span>
-}
-
-
+import { CreatePhrase } from './EnglishWords.ts';
+import { Word, type IWord } from './Word.tsx';
+import { Keys } from './statics.ts';
 interface ICodingsState {
+  phraseLength: 25,
   attempt: string,
   index: number,
   words: IWord[]
@@ -48,9 +15,10 @@ const INITIAL_INDEX = 0;
 function App() {
 
   const [cfg, setCfg] = useState<ICodingsState>({
+    phraseLength: 25,
     attempt: "",
     index: INITIAL_INDEX,
-    words: Phrase.split(' ').map((x:string, idx:number) => { return {value: x, attempt: '', isCurrent: idx == INITIAL_INDEX};})
+    words: CreatePhrase(25).map((x:string, idx:number) => { return {value: x, attempt: '', isCurrent: idx == INITIAL_INDEX};})
   });
 
 
@@ -61,14 +29,26 @@ function App() {
 
   const onKeyDown = (evt:React.KeyboardEvent<HTMLInputElement>) => {
     //Replace with a dict  of <string:(evt) => void> 
-      console.log(evt.code);
       switch(evt.code) {
-        case KEY_SPACE: {onSpaceKeyDown(evt); break}
+        case Keys.Space: {onSpaceKeyDown(evt); break}
+        case Keys.Escape: {onEscKeyDown(evt); break}
         default: break;
       }
   }
 
-  const onSpaceKeyDown = (_evt:React.KeyboardEvent<HTMLInputElement>) => {
+  const onEscKeyDown = (evt:React.KeyboardEvent<HTMLInputElement>) => {
+      const next = {
+        phraseLength: 25,
+        attempt: "",
+        index: INITIAL_INDEX,
+        words: CreatePhrase(25).map((x:string, idx:number) => { return {value: x, attempt: '', isCurrent: idx == INITIAL_INDEX};})
+      };
+      setCfg(next);
+  }
+
+  const onSpaceKeyDown = (evt:React.KeyboardEvent<HTMLInputElement>) => {
+    evt.preventDefault();
+    evt.stopPropagation();
     const _word = {...cfg.words[cfg.index], attempt: cfg.attempt, isCurrent: false};
     const _nextWord = {...cfg.words[cfg.index + 1], attempt: null, isCurrent: true};
 
@@ -80,6 +60,7 @@ function App() {
 
     setCfg(curr => {
       return {
+        ...curr,
         index: curr.index + 1,
         words: nextWordArr,
         attempt: ""
