@@ -1,7 +1,7 @@
 import { useState, type ReactElement } from 'react'
 import './App.css'
 import { CreatePhrase } from './lib/PhraseGen.ts';
-import { Word, type IWord } from './Word.tsx';
+import { Word, WORD_STATE_COMPLETED, WORD_STATE_CURRENT, WORD_STATE_NOT_STARTED, type IWord } from './components/Word.tsx';
 import { KEY_CODE_SPACE, KEY_CODE_ESCAPE } from './lib/statics.ts';
 
 interface ICodingsState {
@@ -21,7 +21,7 @@ function App() {
     phraseLength: INITIAL_LENGTH,
     attempt: "",
     index: INITIAL_INDEX,
-    words: CreatePhrase(INITIAL_LENGTH).map((x:string, idx:number) => { return {value: x, attempt: '', isCurrent: idx == INITIAL_INDEX};}),
+    words: CreatePhrase(INITIAL_LENGTH).map((x:string, idx:number) => { return {value: x, attempt: '', currentIndex: INITIAL_INDEX, wordIndex: idx};}),
     state: "IDLE"
   });
 
@@ -62,47 +62,42 @@ function App() {
           phraseLength: INITIAL_LENGTH,
           attempt: "",
           index: INITIAL_INDEX,
-          words: CreatePhrase(INITIAL_LENGTH).map((x:string, idx:number) => { return {value: x, attempt: '', isCurrent: idx == INITIAL_INDEX};}),
+          words: CreatePhrase(INITIAL_LENGTH).map((x:string, idx:number) => { return {value: x, attempt: '', currentIndex: INITIAL_INDEX, wordIndex: idx};}),
           state:"IDLE"
         };
         setCfg(next);
     }
 
   function onSpaceKeyDown (evt:React.KeyboardEvent<HTMLInputElement>) {
-
-
       if(cfg.state === "FINISHED") {
         return;
       }
 
-
     evt.preventDefault();
     evt.stopPropagation();
-    const _word = {...cfg.words[cfg.index], attempt: cfg.attempt, isCurrent: false};
-    const _nextWord = {...cfg.words[cfg.index + 1], attempt: null, isCurrent: true};
-
-    //TODO: The array grows if you continue to spam spoace, fix the nextWordArr to actually have some limits .... 
-    const nextWordArr = [
-      ...cfg.words.slice(0, cfg.index),
-      ...[_word,_nextWord],
-      ...cfg.words.slice(cfg.index + 2)
-    ];
 
     setCfg(curr => {
 
       const _nextIndex = curr.index + 1;
-      const _state = curr.index === curr.words.length -1 ? "FINISHED" : "ACTIVE";
+      
+      const _cfgState = curr.index === curr.words.length -1 ? "FINISHED" : "ACTIVE";
+
+      const _words = cfg.words.map((word:IWord, wordIndex: number) => {
+        if(wordIndex === curr.index) {
+          return {...word, attempt: curr.attempt, currentIndex: _nextIndex}
+        }
+        return {...word, currentIndex: _nextIndex}
+      });
 
       return {
         ...curr,
-        index: curr.index + 1,
-        words: nextWordArr,
+        index: _nextIndex,
+        words: _words,
         attempt: "",
-        state:_state
+        state:_cfgState
       };
     });
   }
-
 
   return (
     <>

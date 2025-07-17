@@ -1,3 +1,0 @@
-const Phrase : string = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet velit nec tellus varius efficitur. Quisque blandit cursus mattis. Donec mattis purus quis ex fermentum feugiat. Pellentesque vestibulum feugiat mattis. Sed vitae sollicitudin enim. Curabitur vel odio aliquam neque auctor feugiat eu a magna. Pellentesque ullamcorper a est sed ultrices. Nunc ornare risus ac tincidunt imperdiet. Suspendisse dolor erat, tincidunt ac vehicula ac, sodales vitae urna. Etiam malesuada tellus et porta porta. Cras volutpat augue dui, non efficitur risus auctor a. Proin lobortis, nulla et vulputate ultricies, dui mauris iaculis ex, quis aliquam metus quam non ante. Maecenas ac.";
-
-export {Phrase}
