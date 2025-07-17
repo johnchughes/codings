@@ -4,6 +4,7 @@ export const WORD_STATE_NOT_STARTED : string = "NOT_STARTED";
 
 export type WORD_STATE  = typeof WORD_STATE_CURRENT | typeof WORD_STATE_COMPLETED | typeof WORD_STATE_NOT_STARTED;
 
+//TODO: remove the indexes, causes an update to all words every time the index changes.
 export interface IWord {
   wordIndex: number,
   currentIndex: number,
@@ -12,7 +13,7 @@ export interface IWord {
 }
 
 export const Word = ({value, attempt, wordIndex, currentIndex}:IWord) => {
-  
+
   const GetClass = () => {
 
     if(wordIndex === currentIndex) {

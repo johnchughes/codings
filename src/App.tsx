@@ -1,7 +1,7 @@
 import { useState, type ReactElement } from 'react'
 import './App.css'
 import { CreatePhrase } from './lib/PhraseGen.ts';
-import { Word, WORD_STATE_COMPLETED, WORD_STATE_CURRENT, WORD_STATE_NOT_STARTED, type IWord } from './components/Word.tsx';
+import { Word,type IWord } from './components/Word.tsx';
 import { KEY_CODE_SPACE, KEY_CODE_ESCAPE } from './lib/statics.ts';
 
 interface ICodingsState {
@@ -58,7 +58,7 @@ function App() {
   }
 
   function Reset() {
-    const next = {
+    const next : ICodingsState = {
           phraseLength: INITIAL_LENGTH,
           attempt: "",
           index: INITIAL_INDEX,
