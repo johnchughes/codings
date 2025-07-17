@@ -40,15 +40,15 @@ button.btn-reset {
     color: grey;
 
     &.current {
-      color: pink;
+      color: #f8fce3;
     }
 
     &.correct {
-      color: green;
+      color: #7cda68;
     }
 
     &.wrong {
-      color: red;
+      color: #c7554d;
     }
 
   }
